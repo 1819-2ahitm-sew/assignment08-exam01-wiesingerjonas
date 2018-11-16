@@ -1,3 +1,10 @@
+/*
+    * Jonas Wiesinger
+    * 1. Test SEW
+    * Aufgabe 1
+    * 16.11.2018
+ */
+
 package at.htl.exam01.compress;
 
 import java.io.FileNotFoundException;
@@ -8,64 +15,50 @@ public class StringCompress {
 
     private static final String FILE_NAME = "sample.txt";
 
-    /**
-     * Main-Methode, hier wird das StringCompress-Objekt erstellt
-     * und die Methoden des Objekts werden aufgerufen
-     *
-     * @param args
-     */
     public static void main(String[] args) {
         StringCompress sc = new StringCompress();
         String[] text = sc.readFromFile(FILE_NAME);
-        sc.print(text);
+        int lines = getNoOfLines(text);
+        print(text, lines);
     }
 
-
-    /**
-     *
-     * Sämtliche Zeilen werden aus der Textdatei eingelesen
-     * zB 5A
-     * Nun wird in das String-Array AAAAA geschrieben
-     *
-     * Bsp Testdatei
-     * 5A
-     * 3B
-     * 4C
-     *
-     * ergibt eine String-Array mit 3 Elementen
-     * AAAAA
-     * BBB
-     * CCCC
-     *
-     * @param fileName
-     * @return String-Array mit dem entpacktem Text
-     */
     public String[] readFromFile(String fileName) {
 
+        StringBuilder sb = new StringBuilder();
 
-        return null;
+        try(Scanner scanner = new Scanner(new FileReader(fileName))){
+            while(scanner.hasNextLine()){
+                sb.append(scanner.nextLine());
+                sb.append("\n");
+            }
+        }catch (FileNotFoundException e){
+            System.err.println(e.getMessage());
+        }
+
+        String[] fileArray = sb.toString().split("\n");
+
+        return fileArray;
     }
 
-
-    /**
-     * Der Inhalt des String-Arrays wird zeilenweise auf der Console ausgegeben
-     *
-     *
-     * @param lines String-Array
-     */
-    public void print(String[] lines) {
-
+    public static void print(String[] text, int lines) {
+        for (int i = 0; i < lines; i++) {
+            if(text[i].length() == 2){
+                for (int j = 0; j < text[i].charAt(1) - 48; j++) {
+                    System.out.print(text[i].charAt(0));
+                }
+            }else if(text[i].length() == 3){
+                for (int j = 0; j < (text[i].charAt(1) - 48)*10 + (text[i].charAt(2) - 48); j++) {
+                    System.out.print(text[i].charAt(0));
+                }
+            }
+            System.out.println();
+        }
     }
 
-    /**
-     * Die Anzahl der Zeilen der übergebenen Textdatei wird bestimmt
-     *
-     * @param fileName
-     * @return Anzahl der Zeilen in der Textdatei
-     */
-    public int getNoOfLines(String fileName) {
+    public static int getNoOfLines(String[] fileArray) {
 
+        int lines = fileArray.length;
 
-        return -1;
+        return lines;
     }
 }
